@@ -1,0 +1,188 @@
+import asyncio
+from multiprocessing import Event, Pipe
+from multiprocessing.dummy import Process
+from os import kill
+import time
+
+# from HandTracking import HandTracker
+# from ScreenController import MouseController
+
+import keyboard
+from tkinter import *
+
+from macapi import getActiveInfo, openInfo
+import pygetwindow as gw
+from tkinter import *
+
+canvas_width = 200
+canvas_height = 100
+
+key_dict = {}
+
+
+
+
+def checkered(canvas, line_distance):
+    # vertical lines at an interval of "line_distance" pixel
+    for x in range(line_distance, canvas_width, line_distance):
+        canvas.create_line(x, 0, x, canvas_height, fill="#476042")
+    # horizontal lines at an interval of "line_distance" pixel
+    for y in range(line_distance, canvas_height, line_distance):
+        canvas.create_line(0, y, canvas_width, y, fill="#476042")
+
+
+class WeDaBestKeyboard:
+    def __init__(self):
+        self.buttons = [
+            '~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', 'DEL',
+            'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\\', '7', '8', '9', 'BACK',
+            'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '[', ']', '4', '5', '6', 'SHIFT',
+            'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?', '/', '1', '2', '3', 'SPACE',
+        ]
+        self.kb = Tk()
+
+    def select(value, b):
+        print(value)
+        print(b)
+
+    def get_coords(elem):
+        x, y = elem.winfo_rootx(), elem.winfo_rooty()
+        # print(x, y)
+
+    def MidKeyboard(self, parent):
+        fg = "#3c4987"
+        bg = "#FFFFFF"
+        rIdx = 2
+        cIdx = 0
+
+        for button in self.buttons:
+
+            command = lambda x=button: self.select(x)
+
+            if button == "SPACE" or button == "SHIFT" or button == "BACK" or button == "DEL":
+                btn = Button(parent, text=button, height=4, width=8, bg=bg, fg=fg,
+                             activebackground=fg, activeforeground=bg, relief='raised', padx=1,
+                             pady=1, bd=1, command=command)
+                btn.grid(row=rIdx, column=cIdx)
+                key_dict[button] = btn
+                # print(button + " " + str(btn))
+
+            else:
+                btn = Button(parent, text=button, width=6, height=4, bg=bg, fg=fg,
+                             activebackground=fg, activeforeground=bg, relief='raised', padx=1,
+                             pady=1, bd=1, command=command)
+                btn.grid(row=rIdx, column=cIdx)
+                key_dict[button] = btn
+
+            cIdx += 1
+
+            if cIdx > 14 and rIdx == 2:
+                cIdx = 0
+                rIdx += 1
+            if cIdx > 14 and rIdx == 3:
+                cIdx = 0
+                rIdx += 1
+            if cIdx > 14 and rIdx == 4:
+                cIdx = 0
+                rIdx += 1
+
+    def render(self):
+        self.kb.title("Keyboard")
+        # self.kb.resizable(0, 0)
+
+        self.kb.attributes('-alpha', 0.6)
+        # self.kb.configure(bg=bg)
+        self.kb.wm_attributes('-type', 'splash')
+        self.kb.attributes('-topmost', True)
+
+        # self.display.config(bg='')
+
+        self.MidKeyboard(self.kb)
+
+        self.kb.overrideredirect(1)
+
+        # def stay_on_top():
+        #     self.kb.lift()
+        #     self.kb.after(1000, func=stay_on_top)
+
+        self.kb.geometry("1338x296")
+        # label1 = Label(kb, text='').grid(row=0, columnspan=15)
+        self.kb.update()
+        width = self.kb.winfo_width()
+        height = self.kb.winfo_height()
+
+        print("The width of the label is:", width, "pixels")
+        print("The height of the label is:", height, "pixels")
+        self.kb.mainloop()
+
+
+if __name__ == "__main__":
+    # keys = WeDaBestKeyboard()
+    # keys.render()
+    import tkinter as tk
+    import tkinter.font as tkf
+
+    import keyboardlayout as kl
+    import keyboardlayout.tkinter as klt
+
+    layout_name = kl.LayoutName.QWERTY
+    key_size = 60
+    grey = '#bebebe'
+    dark_grey = '#414141'
+    keyboard_info = kl.KeyboardInfo(
+        position=(0, 0),
+        padding=2,
+        color=dark_grey
+    )
+    window = tk.Tk()
+    window.resizable(False, False)
+    key_info = kl.KeyInfo(
+        margin=10,
+        color=grey,
+        txt_color=dark_grey,
+        txt_font=tkf.Font(family='Arial', size=key_size // 4),
+        txt_padding=(key_size // 6, key_size // 10)
+    )
+    letter_key_size = (key_size, key_size)  # width, height
+    keyboard_layout = klt.KeyboardLayout(
+        layout_name,
+        keyboard_info,
+        letter_key_size,
+        key_info,
+        master=window
+    )
+    window.mainloop()
+    # menubar = Menu(kb)
+    # kb.config(menu=menubar)
+
+    # kb.wm_attributes('-fullscreen', 'True')
+    # emptyMenu = Menu(kb)
+    # kb.config(menu=emptyMenu)
+
+    # # entry = Entry(kb, width=50)
+    # # entry.grid(row=1, columnspan=15)
+    # entry.pack()
+
+    # kb.bind("<Button-1>", lambda e: HosoPop())
+
+    # try:
+    #     kill_event = Event()
+    #     ScreenControllerConnection, HandTrackerConnection = Pipe(False)
+    #     # start the sender
+    #     HandTracker_process = Process(
+    #         target=HandTracker, args=(HandTrackerConnection, kill_event))
+    #     HandTracker_process.start()
+    #     # start the receiver
+    #     MouseController_process = Process(
+    #         target=MouseController, args=(ScreenControllerConnection, kill_event))
+    #     MouseController_process.start()
+    #
+    #     # after the space key is pressed, the kill signal will be sent
+    #     keyboard.wait('space')
+    #     raise KeyboardInterrupt
+    #
+    # except KeyboardInterrupt:
+    #
+    #     kill_event.set()
+    #     HandTracker_process.join()
+    #     MouseController_process.join()
