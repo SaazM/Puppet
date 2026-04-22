@@ -31,3 +31,7 @@ Right now, Puppet can control presentations, the web, and your keyboard. In the 
 - Opportunities in virtual reality: Cheaper VR alternatives such as Google Cardboard could be paired with 
 Puppet to create a premium VR experience with at-home technology.  This could be used in both examples described above.
 - Opportunities in hospitals / public areas: People have been especially careful about avoiding germs lately. With Puppet, you won't need to touch any keyboard and mice shared by many doctors, providing a more sanitary way to use computers.
+
+## Credits
+Project wouldnt be possible with Zayn Rekhi and Joey Sorkin who made this with me. They are not contributors to this repo since the orignal one was private.
+
