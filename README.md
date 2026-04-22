@@ -1,5 +1,5 @@
 ## Awards
-https://devpost.com/software/puppet
+Penapps 2022 winner: https://devpost.com/software/puppet
 
 ## Inspiration
 Without purchasing hardware, there are few ways to have contact-free interactions with your computer. 
