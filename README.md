@@ -1,3 +1,6 @@
+## Awards
+https://devpost.com/software/puppet
+
 ## Inspiration
 Without purchasing hardware, there are few ways to have contact-free interactions with your computer. 
 To make such technologies accessible to everyone, we created one of the first touch-less hardware-less means of computer control by employing machine learning and gesture analysis algorithms. Additionally, we wanted to make it as accessible as possible in order to reach a wide demographic of users and developers.
